@@ -54,6 +54,15 @@
                                     ?>
                                 </h3>
                             </div>
+                            <div class="text-center text-success py-2" id="successMessage">
+                                <?php
+                                if(isset($_SESSION['user_and_email_exit'])){
+                                    echo $_SESSION['user_and_email_exit'];
+                                    unset($_SESSION['user_and_email_exit']);
+                                }
+                                
+                                ?>
+                            </div>
                             <form id="signup" action="./signup_action.php" method="post" enctype="multipart/form-data">
                                 <div class="row mb-2">
                                     <div class="col-4">

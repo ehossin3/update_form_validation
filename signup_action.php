@@ -11,7 +11,21 @@
         $profile_img    = $_FILES['profile_img'];
         $term           = $_POST['term'];
 
+        //username and email exist check
+        $select_username_and_email = "SELECT * FROM registration
+        WHERE username = '$username' OR email = '$user_email'";
 
+        $select_query_run = $conn->query($select_username_and_email);
+        if($select_query_run->num_rows > 0){
+            header("location: signup");
+            $_SESSION['user_and_email_exit'] = "Username Or Email already use";
+            exit;
+        }
+        else{
+            echo "nai";
+        }
+
+        exit;
         //image
         $image_name = basename($profile_img['name']);
         $tmp_name   = $profile_img['tmp_name'];
