@@ -22,34 +22,32 @@
             exit;
         }
         else{
-            echo "nai";
-        }
+              //image
+            $image_name = basename($profile_img['name']);
+            $tmp_name   = $profile_img['tmp_name'];
+            $file_dir   = "profile_photos/";
+            $file_dest  = $file_dir . $image_name;
 
-        exit;
-        //image
-        $image_name = basename($profile_img['name']);
-        $tmp_name   = $profile_img['tmp_name'];
-        $file_dir   = "profile_photos/";
-        $file_dest  = $file_dir . $image_name;
-
-        $insert_query = "INSERT INTO  registration(username, password, email, phone, website, profile_image, term) VALUES(?,?,?,?,?,?,?)";
+            $insert_query = "INSERT INTO  registration(username, password, email, phone, website, profile_image, term) VALUES(?,?,?,?,?,?,?)";
 
 
-        $stmt = $conn->prepare($insert_query);
-        $stmt->bind_param("sssssss", $username,$confirm_pass,$user_email,$phone,$web_url,$file_dest, $term);
-        if($stmt->execute()){
+            $stmt = $conn->prepare($insert_query);
+            $stmt->bind_param("sssssss", $username,$confirm_pass,$user_email,$phone,$web_url,$file_dest, $term);
+            if($stmt->execute()){
+                
+                move_uploaded_file($tmp_name,$file_dest);
+                $_SESSION['registration'] = "Registration successfull";
+                header("location: login");
+                exit;
+            }
+            else {
+                echo "Error: " . $conn->error;
+            }
+
             
-            move_uploaded_file($tmp_name,$file_dest);
-            $_SESSION['registration'] = "Registration successfull";
-            header("location: login");
-            exit;
+            $stmt->close();
         }
-        else {
-            echo "Error: " . $conn->error;
-        }
-
-        
-        $stmt->close();
+      
         
     }
     else {
@@ -57,8 +55,6 @@
         header("location: singup");
         exit;
     }
-
-
 
     $conn->close();
 ?>
